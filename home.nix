@@ -1,0 +1,162 @@
+{ config, pkgs, lib, inputs, system, ... }:
+
+{
+  imports = [
+    ./env.nix
+    ./zsh.nix
+  ];
+
+  home = {
+    username = "zephyr";
+    homeDirectory = lib.mkForce "/Users/zephyr";
+    stateVersion = "23.11";
+    enableNixpkgsReleaseCheck = false;
+    
+    activation = {
+      setupNvim = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
+        # 确保父目录存在并设置权限
+        mkdir -p "$HOME/.config"
+        chmod 755 "$HOME/.config"
+        
+        # 清理并重建 nvim 相关目录
+        rm -rf "$HOME/.config/nvim"
+        rm -rf "$HOME/.local/share/nvim"
+        rm -rf "$HOME/.cache/nvim"
+        
+        mkdir -p "$HOME/.config/nvim"
+        mkdir -p "$HOME/.local/share/nvim/lazy"
+        mkdir -p "$HOME/.cache/nvim"
+        
+        # 设置目录所有权和权限
+        chown -R $USER "$HOME/.config/nvim"
+        chown -R $USER "$HOME/.local/share/nvim"
+        chown -R $USER "$HOME/.cache/nvim"
+        
+        chmod -R 755 "$HOME/.config/nvim"
+        chmod -R 755 "$HOME/.local/share/nvim"
+        chmod -R 755 "$HOME/.cache/nvim"
+        
+        # 创建并设置 lazy-lock.json 权限
+        touch "$HOME/.config/nvim/lazy-lock.json"
+        chown $USER "$HOME/.config/nvim/lazy-lock.json"
+        chmod 644 "$HOME/.config/nvim/lazy-lock.json"
+        
+        # 安装 lazy.nvim
+        LAZY_NVIM_DIR="$HOME/.local/share/nvim/lazy/lazy.nvim"
+        if [ ! -d "$LAZY_NVIM_DIR" ]; then
+          ${pkgs.git}/bin/git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable "$LAZY_NVIM_DIR"
+        fi
+      '';
+    };
+    
+    packages = with pkgs; [
+      (nerdfonts.override { fonts = [ "Meslo" ]; })
+      ripgrep
+      fd
+      fzf
+      zsh
+      zsh-autosuggestions
+      zsh-syntax-highlighting
+      zsh-powerlevel10k
+    ];
+  };
+
+  programs.neovim = {
+    enable = true;
+    defaultEditor = true;
+    viAlias = true;
+    vimAlias = true;
+    
+    withNodeJs = false;
+    withPython3 = false;
+    withRuby = false;
+    
+    extraPackages = with pkgs; [
+      # LSP servers
+      nodePackages.typescript-language-server
+      lua-language-server
+      nil # Nix LSP
+      marksman  # 添加 marksman LSP server
+      
+      # Tools
+      ripgrep
+      fd
+      
+      # Optional: Node.js for certain plugins
+      nodejs
+      
+      # 添加其他必要的依赖
+      git    # lazy.nvim 需要
+      gcc    # 某些插件可能需要编译
+      
+      # 添加权限管理工具
+      coreutils
+    ];
+  };
+
+  # 管理 Neovim 配置文件
+  home.file.".config/nvim" = {
+    source = ./nvim;
+    recursive = true;
+    force = true;
+    onChange = ''
+      mkdir -p "$HOME/.config/nvim"
+      mkdir -p "$HOME/.local/share/nvim/lazy"
+      mkdir -p "$HOME/.cache/nvim"
+      
+      chown -R $USER "$HOME/.config/nvim"
+      chown -R $USER "$HOME/.local/share/nvim"
+      chown -R $USER "$HOME/.cache/nvim"
+      
+      chmod -R 755 "$HOME/.config/nvim"
+      chmod -R 755 "$HOME/.local/share/nvim"
+      chmod -R 755 "$HOME/.cache/nvim"
+      
+      touch "$HOME/.config/nvim/lazy-lock.json"
+      chown $USER "$HOME/.config/nvim/lazy-lock.json"
+      chmod 644 "$HOME/.config/nvim/lazy-lock.json"
+      
+      if [ ! -d "$HOME/.local/share/nvim/lazy/lazy.nvim" ]; then
+        ${pkgs.git}/bin/git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable "$HOME/.local/share/nvim/lazy/lazy.nvim"
+      fi
+    '';
+  };
+
+  # Git 配置
+  programs.git = {
+    enable = true;
+    userName = "Jing-yilin";
+    userEmail = "yilin.jing@outlook.com";
+    includes = [
+      { path = "~/dotfiles/git/config"; }
+    ];
+    ignores = [
+      ".DS_Store"
+      "*.swp"
+    ];
+    extraConfig = {
+      init.defaultBranch = "main";
+      pull.rebase = true;
+      core.editor = "nvim";
+    };
+  };
+
+  # 让 home-manager 管理自己
+  programs.home-manager.enable = true;
+
+  home.file.".config/karabiner/karabiner.json" = {
+    source = ./karabiner/karabiner.json;
+    force = true;
+  };
+
+  home.file.".config/sketchybar" = {
+    source = ./sketchybar;
+    recursive = true;
+    force = true;
+  };
+
+  home.file.".config/pip/pip.conf" = {
+    source = ./pip/pip.conf;
+    force = true;
+  };
+} 

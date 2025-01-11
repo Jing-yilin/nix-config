@@ -1,0 +1,75 @@
+当前项目结构如下：
+
+.
+├── README.md
+├── env.nix
+├── flake.lock
+├── flake.nix
+├── home.nix
+├── install.sh
+├── karabiner
+│   └── karabiner.json
+├── nvim
+│   ├── init.lua
+│   ├── lazy-lock.json
+│   └── lua
+│       ├── plugins
+│       │   ├── LuaSnip.lua
+│       │   ├── alpha.lua
+│       │   ├── autopairs.lua
+│       │   ├── catppuccin.lua
+│       │   ├── comment.lua
+│       │   ├── completions.lua
+│       │   ├── git-stuff.lua
+│       │   ├── gitsigns.lua
+│       │   ├── indent.lua
+│       │   ├── lsp-config.lua
+│       │   ├── lualine.lua
+│       │   ├── neo-tree.lua
+│       │   ├── none-ls.lua
+│       │   ├── nordic.lua
+│       │   ├── nvim-tmux-navigation.lua
+│       │   ├── nvim-treesitter.lua
+│       │   ├── oil.lua
+│       │   ├── swagger-preview.lua
+│       │   ├── telescope.lua
+│       │   ├── todo-comments.lua
+│       │   └── which-key.lua
+│       └── vim-options.lua
+├── pip
+│   └── pip.conf
+├── sketchybar
+│   ├── colors.sh
+│   ├── helper
+│   │   ├── cpu.h
+│   │   ├── helper
+│   │   ├── helper.c
+│   │   ├── makefile
+│   │   └── sketchybar.h
+│   ├── icons.sh
+│   ├── items
+│   │   ├── apple.sh
+│   │   ├── battery.sh
+│   │   ├── brew.sh
+│   │   ├── calendar.sh
+│   │   ├── cpu.sh
+│   │   ├── front_app.sh
+│   │   ├── github.sh
+│   │   ├── spaces.sh
+│   │   ├── spotify.sh
+│   │   └── volume.sh
+│   ├── plugins
+│   │   ├── battery.sh
+│   │   ├── brew.sh
+│   │   ├── calendar.sh
+│   │   ├── github.sh
+│   │   ├── icon_map.sh
+│   │   ├── space.sh
+│   │   ├── spotify.sh
+│   │   ├── volume.sh
+│   │   ├── volume_click.sh
+│   │   ├── yabai.sh
+│   │   └── zen.sh
+│   └── sketchybarrc
+├── tree.txtx
+└── zsh.nix

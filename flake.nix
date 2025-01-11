@@ -29,14 +29,6 @@
       environment.systemPackages = with pkgs; [
         home-manager.packages.${system}.default
         mkalias
-        obsidian
-        neovim
-        jq
-        htop
-        fzf
-        tree
-        ffmpeg
-        zoxide
       ];
 
       homebrew = {

@@ -149,6 +149,19 @@
       c = "cursor";
       v = "nvim";
       p = "python";
+      
+      # 系统监控相关别名
+      top = "htop";  # 使用 htop 替代 top
+      btm = "bottom";  # bottom 的快捷方式
+      df = "duf";  # 更好的磁盘使用分析
+      ps = "procs";  # 更现代的进程查看
+      gl = "glances";  # glances 快捷方式
+      
+      # 快速查看系统信息
+      cpu = "htop -s PERCENT_CPU";  # CPU 使用率排序
+      mem = "htop -s PERCENT_MEM";  # 内存使用率排序
+      disk = "duf";  # 磁盘使用情况
+      sys = "glances";  # 系统概览
     };
     
     # 初始化脚本

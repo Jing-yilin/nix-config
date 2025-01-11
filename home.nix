@@ -1,5 +1,31 @@
 { config, pkgs, lib, inputs, system, ... }:
 
+let
+  follow = pkgs.stdenv.mkDerivation {
+    pname = "Follow";
+    version = "0.3.1-beta.0";
+    
+    src = pkgs.fetchurl {
+      url = "https://github.com/RSSNext/Follow/releases/download/v0.3.1-beta.0/Follow-0.3.1-beta.0-macos-arm64.dmg";
+      sha256 = "ed08f999dab97bca404e71b78cb7b46e10763997c8afad0dcb5e844f203b53e9";
+    };
+    
+    nativeBuildInputs = [ pkgs.undmg ];
+    
+    sourceRoot = ".";
+    
+    installPhase = ''
+      mkdir -p $out/Applications
+      cp -r *.app $out/Applications
+    '';
+    
+    meta = {
+      description = "Follow RSS Reader";
+      homepage = "https://github.com/RSSNext/Follow";
+      platforms = lib.platforms.darwin;
+    };
+  };
+in
 {
   imports = [
     ./env.nix
@@ -58,6 +84,18 @@
       zsh-autosuggestions
       zsh-syntax-highlighting
       zsh-powerlevel10k
+      htop
+      bottom
+      duf
+      procs
+      glances
+      obsidian
+      jq
+      fzf
+      tree
+      ffmpeg
+      zoxide
+      follow
     ];
   };
 

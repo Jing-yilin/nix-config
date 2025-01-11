@@ -68,3 +68,12 @@ darwin-rebuild switch --flake .#default
 - [Nix](https://nixos.org/)
 - [nix-darwin](https://github.com/LnL7/nix-darwin)
 - [Home Manager](https://github.com/nix-community/home-manager) 
+
+## Configuration Files
+
+- `nix.conf`: Contains basic Nix configuration including experimental features and binary caches
+  - Enables flakes and nix-command
+  - Configures binary caches for faster package downloads
+  - Public keys:
+    - `cache.nixos.org`: Official Nixpkgs binary cache
+    - `nix-community.cachix.org`: Community maintained binary cache 

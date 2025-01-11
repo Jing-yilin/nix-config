@@ -23,11 +23,9 @@ else
 fi
 
 # Enable Flakes and Nix Command
-echo "⚙️[Config] Enabling Nix features..."
+echo "⚙️[Config] Setting up Nix configuration..."
 mkdir -p ~/.config/nix
-if ! grep -q "experimental-features" ~/.config/nix/nix.conf 2>/dev/null; then
-    echo "experimental-features = nix-command flakes" >> ~/.config/nix/nix.conf
-fi
+cp nix.conf ~/.config/nix/nix.conf
 
 # Check and install Xcode Command Line Tools
 if ! xcode-select -p &>/dev/null; then
@@ -52,12 +50,7 @@ fi
 # Install nix-darwin
 if [ ! -d "$HOME/.nix-defexpr/darwin" ]; then
     echo "🌟[Install] Installing nix-darwin..."
-    git clone https://github.com/LnL7/nix-darwin ~/.nix-defexpr/darwin
-
-    echo "🔧[Build] Building nix-darwin installer..."
     nix-build https://github.com/LnL7/nix-darwin/archive/master.tar.gz -A installer
-
-    echo "💻[Install] Running nix-darwin installer..."
     ./result/bin/darwin-installer
 else
     echo "✓[Check] nix-darwin already installed"

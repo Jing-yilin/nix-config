@@ -85,19 +85,19 @@ Before you begin, make sure you have copied the `~/.config/nix` directory to the
 2. **仅修改了 `home.nix` 或用户级配置**
 
    ```bash
-   home-manager switch --flake .#zephyr
+   home-manager switch --flake .#default
    ```
 
 3. **同时修改了 `flake.nix` 和 `home.nix`**
 
    ```bash
-   darwin-rebuild switch --flake .#mac-m1 && home-manager switch --flake .#zephyr
+   darwin-rebuild switch --flake .#mac-m1 && home-manager switch --flake .#default
    ```
 
 4. **如果遇到缓存问题，可以添加 `--impure` 标志**
 
    ```bash
-   darwin-rebuild switch --flake .#mac-m1 --impure
+   darwin-rebuild switch --flake .#default --impure
    ```
 
 **注意：** 重新加载配置后，某些更改可能需要重新登录或重启系统才能完全生效。

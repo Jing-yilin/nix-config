@@ -1,5 +1,5 @@
 {
-  description = (import ./config.nix).description;
+  description = "Yilin's Darwin system flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";

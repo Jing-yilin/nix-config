@@ -1,0 +1,4 @@
+{
+  # User configuration
+  username = "zephyr";
+} 

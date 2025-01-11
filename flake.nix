@@ -1,5 +1,5 @@
 {
-  description = "Yilin's Darwin system flake";
+  description = (import ./config.nix).description;
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -16,6 +16,8 @@
   outputs = inputs@{ self, nix-darwin, nixpkgs, nix-homebrew, emacs-overlay, home-manager }:
   let
     system = "aarch64-darwin";
+    userConfig = import ./config.nix;
+    username = userConfig.username;
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
@@ -134,7 +136,7 @@
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."yilin-mac" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."default" = nix-darwin.lib.darwinSystem {
       modules = [ 
         configuration
         nix-homebrew.darwinModules.nix-homebrew
@@ -143,9 +145,9 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.zephyr = import ./home.nix;
+            users.${username} = import ./home.nix;
             extraSpecialArgs = { 
-              inherit inputs system; 
+              inherit inputs system username; 
             };
           };
         }
@@ -158,7 +160,7 @@
             enableRosetta = true;
 
             # User owning the Homebrew prefix
-            user = "Zephyr";
+            user = username;
             autoMigrate = true;
 
             # Optional: Declarative tap management
@@ -177,11 +179,11 @@
     };
 
     # Expose the package set, including overlays, for convenience.
-    darwinPackages = self.darwinConfigurations."mac-m1".pkgs;
+    darwinPackages = self.darwinConfigurations."default".pkgs;
 
-    homeConfigurations."zephyr" = home-manager.lib.homeManagerConfiguration {
+    homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
       pkgs = pkgs;
-      extraSpecialArgs = { inherit inputs; };
+      extraSpecialArgs = { inherit inputs username; };
       modules = [ ./home.nix ];
     };
   };

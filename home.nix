@@ -1,4 +1,4 @@
-{ config, pkgs, lib, inputs, system, ... }:
+{ config, pkgs, lib, inputs, system, username, ... }:
 
 let
   Follow = pkgs.stdenv.mkDerivation {
@@ -33,8 +33,8 @@ in
   ];
 
   home = {
-    username = "zephyr";
-    homeDirectory = lib.mkForce "/Users/zephyr";
+    username = username;
+    homeDirectory = lib.mkForce "/Users/${username}";
     stateVersion = "23.11";
     enableNixpkgsReleaseCheck = false;
     

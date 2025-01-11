@@ -1,7 +1,7 @@
 { config, pkgs, lib, inputs, system, ... }:
 
 let
-  follow = pkgs.stdenv.mkDerivation {
+  Follow = pkgs.stdenv.mkDerivation {
     pname = "Follow";
     version = "0.3.1-beta.0";
     
@@ -95,7 +95,7 @@ in
       tree
       ffmpeg
       zoxide
-      follow
+      Follow
     ];
   };
 
@@ -137,27 +137,6 @@ in
     source = ./nvim;
     recursive = true;
     force = true;
-    onChange = ''
-      mkdir -p "$HOME/.config/nvim"
-      mkdir -p "$HOME/.local/share/nvim/lazy"
-      mkdir -p "$HOME/.cache/nvim"
-      
-      chown -R $USER "$HOME/.config/nvim"
-      chown -R $USER "$HOME/.local/share/nvim"
-      chown -R $USER "$HOME/.cache/nvim"
-      
-      chmod -R 755 "$HOME/.config/nvim"
-      chmod -R 755 "$HOME/.local/share/nvim"
-      chmod -R 755 "$HOME/.cache/nvim"
-      
-      touch "$HOME/.config/nvim/lazy-lock.json"
-      chown $USER "$HOME/.config/nvim/lazy-lock.json"
-      chmod 644 "$HOME/.config/nvim/lazy-lock.json"
-      
-      if [ ! -d "$HOME/.local/share/nvim/lazy/lazy.nvim" ]; then
-        ${pkgs.git}/bin/git clone --filter=blob:none https://github.com/folke/lazy.nvim.git --branch=stable "$HOME/.local/share/nvim/lazy/lazy.nvim"
-      fi
-    '';
   };
 
   # Git 配置

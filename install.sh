@@ -10,6 +10,17 @@ if [[ "$PWD" != "$HOME/.config/nix" ]]; then
     exit 1
 fi
 
+# Setup config.nix
+echo "⚙️[Config] Setting up config.nix..."
+if [ ! -f "config.nix" ]; then
+    current_user=$(whoami)
+    cp config.nix.example config.nix
+    sed -i '' "s/<your-computer-username>/$current_user/g" config.nix
+    echo "✓[Config] Created config.nix with username: $current_user"
+else
+    echo "✓[Check] config.nix already exists"
+fi
+
 # Install Nix
 if ! command -v nix &>/dev/null; then
     echo "🚀[Install] Starting Nix installation..."
@@ -40,8 +51,16 @@ fi
 if ! command -v cachix &>/dev/null; then
     echo "📦[Install] Installing Cachix client..."
     nix-env -iA cachix -f https://cachix.org/api/v1/install
+    echo "📦[Config] Enabling nix-community cache..."
+    cachix use nix-community
 else
     echo "✓[Check] Cachix already installed"
+    if ! cachix use nix-community 2>/dev/null; then
+        echo "📦[Config] Enabling nix-community cache..."
+        cachix use nix-community
+    else
+        echo "✓[Check] nix-community cache already enabled"
+    fi
 fi
 
 # Install Home Manager

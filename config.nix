@@ -1,4 +1,0 @@
-{
-  # User configuration
-  username = "zephyr";
-} 

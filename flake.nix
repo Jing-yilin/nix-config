@@ -48,6 +48,7 @@
           "orbstack"
           "termius"
           "iina"
+          "postman"
           # "chatgpt"
           # "whatsapp"
           # "element"

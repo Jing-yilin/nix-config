@@ -36,6 +36,14 @@ else
     echo "✓[Check] Xcode Command Line Tools already installed"
 fi
 
+# Install Cachix
+if ! command -v cachix &>/dev/null; then
+    echo "📦[Install] Installing Cachix client..."
+    nix-env -iA cachix -f https://cachix.org/api/v1/install
+else
+    echo "✓[Check] Cachix already installed"
+fi
+
 # Install Home Manager
 if ! command -v home-manager &>/dev/null; then
     echo "🏠[Install] Installing Home Manager..."

@@ -1,5 +1,5 @@
 {
-  description = "Yilin  Darwin system flake";
+  description = "Yilin's Darwin system flake";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -134,7 +134,7 @@
   {
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
-    darwinConfigurations."mac-m1" = nix-darwin.lib.darwinSystem {
+    darwinConfigurations."yilin-mac" = nix-darwin.lib.darwinSystem {
       modules = [ 
         configuration
         nix-homebrew.darwinModules.nix-homebrew

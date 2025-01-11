@@ -43,10 +43,9 @@
           "alt-tab"
           "warp"
           "wave"
-          "teamviewer"
-          # "cursor"
-          # "orbstack"
-          # "termius"
+          "orbstack"
+          "termius"
+          "iina"
           # "chatgpt"
           # "whatsapp"
           # "element"
@@ -72,6 +71,7 @@
         (pkgs.nerdfonts.override { fonts = [
           "JetBrainsMono"
           "Hack"
+          "Meslo"
         ]; })
       ];
 

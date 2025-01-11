@@ -76,7 +76,6 @@ in
     };
     
     packages = with pkgs; [
-      (nerdfonts.override { fonts = [ "Meslo" ]; })
       ripgrep
       fd
       fzf
@@ -91,7 +90,6 @@ in
       glances
       obsidian
       jq
-      fzf
       tree
       ffmpeg
       zoxide
@@ -114,20 +112,14 @@ in
       nodePackages.typescript-language-server
       lua-language-server
       nil # Nix LSP
-      marksman  # 添加 marksman LSP server
-      
-      # Tools
-      ripgrep
-      fd
+      marksman
       
       # Optional: Node.js for certain plugins
       nodejs
       
-      # 添加其他必要的依赖
-      git    # lazy.nvim 需要
-      gcc    # 某些插件可能需要编译
-      
-      # 添加权限管理工具
+      # 必要的依赖
+      git
+      gcc
       coreutils
     ];
   };

@@ -94,6 +94,7 @@ in
       ffmpeg
       zoxide
       Follow
+      rustup
     ];
   };
 
@@ -121,6 +122,9 @@ in
       git
       gcc
       coreutils
+      
+      # Rust development
+      rust-analyzer
     ];
   };
 

@@ -331,12 +331,6 @@ in
   # 让 home-manager 管理自己
   programs.home-manager.enable = true;
 
-  home.file.".config/sketchybar" = {
-    source = ./sketchybar;
-    recursive = true;
-    force = true;
-  };
-
   home.file.".config/pip/pip.conf" = {
     source = ./pip/pip.conf;
     force = true;

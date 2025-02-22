@@ -331,11 +331,6 @@ in
   # 让 home-manager 管理自己
   programs.home-manager.enable = true;
 
-  home.file.".config/karabiner/karabiner.json" = {
-    source = ./karabiner/karabiner.json;
-    force = true;
-  };
-
   home.file.".config/sketchybar" = {
     source = ./sketchybar;
     recursive = true;

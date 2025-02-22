@@ -8,7 +8,7 @@
     nix-homebrew.url = "github:zhaofengli-wip/nix-homebrew";
     emacs-overlay.url = "github:nix-community/emacs-overlay";
     home-manager = {
-      url = "github:nix-community/home-manager";
+      url = "github:nix-community/home-manager/master";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -21,6 +21,7 @@
     pkgs = import nixpkgs {
       inherit system;
       config.allowUnfree = true;
+      overlays = [ emacs-overlay.overlay ];  # Add emacs overlay
     };
     configuration = { pkgs, config, ... }: {
 
@@ -120,7 +121,28 @@
       # nix.package = pkgs.nix;
 
       # Necessary for using flakes on this system.
-      nix.settings.experimental-features = "nix-command flakes";
+      nix = {
+        optimise = {
+          automatic = true;
+          interval = {
+            Hour = 0;
+            Weekday = 0; # 每周日
+          };
+        };
+        
+        settings = {
+          experimental-features = ["nix-command" "flakes"];
+          trusted-users = ["root" "zephyr"];
+          substituters = [
+            "https://cache.nixos.org"
+            "https://nix-community.cachix.org"
+          ];
+          trusted-public-keys = [
+            "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY="
+            "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
+          ];
+        };
+      };
 
       # Create /etc/zshrc that loads the nix-darwin environment.
       programs.zsh.enable = true;  # default shell on catalina
@@ -141,6 +163,7 @@
     # Build darwin flake using:
     # $ darwin-rebuild build --flake .#simple
     darwinConfigurations."default" = nix-darwin.lib.darwinSystem {
+      inherit system;
       modules = [ 
         configuration
         nix-homebrew.darwinModules.nix-homebrew
@@ -149,10 +172,10 @@
           home-manager = {
             useGlobalPkgs = true;
             useUserPackages = true;
-            users.${username} = import ./home.nix;
             extraSpecialArgs = { 
               inherit inputs system username; 
             };
+            users.${username} = import ./home.nix;
           };
         }
         {

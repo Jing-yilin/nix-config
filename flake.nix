@@ -27,6 +27,9 @@
 
       nixpkgs.config.allowUnfree = true;
 
+      # Set the nixbld group ID to match the actual value
+      ids.gids.nixbld = 350;
+
       # List packages installed in system profile. To search by name, run:
       # $ nix-env -qaP | grep wget
       environment.systemPackages = with pkgs; [
@@ -36,6 +39,10 @@
 
       homebrew = {
         enable = true;
+        onActivation = {
+          autoUpdate = true;
+          upgrade = true;
+        };
         brews = [
           "mas"
           "git-lfs"
@@ -43,6 +50,7 @@
           "yazi"
           "cliclick"
           "imagemagick"
+          "yt-dlp"
         ];
         casks = [
           "alt-tab"
@@ -63,7 +71,7 @@
           # "only-switch"
           "zed"
           "anydesk"
-          "setapp"
+          "listen1"
         ];
         masApps = {
           # "Yoink" = 457622435;
@@ -71,9 +79,6 @@
           # "Things" = 904280696;
           # "Bob" = 1630034110;
         };
-        onActivation.cleanup = "zap";
-        onActivation.autoUpdate = true;
-        onActivation.upgrade = true;
       };
 
       fonts.packages = [
@@ -113,15 +118,16 @@
         finder.FXPreferredViewStyle = "clmv";
         loginwindow.GuestEnabled = false;
         NSGlobalDomain.AppleICUForce24HourTime = true;
-        # NSGlobaLDomain.AppleInterfaceStyle = "Dark";
+        # NSGlobalDomain.AppleInterfaceStyle = "Dark";
       };
 
       # Auto upgrade nix package and the daemon service.
-      # services.nix-daemon.enable = true;
-      # nix.package = pkgs.nix;
+      # services.nix-daemon.enable = true;  # Remove this line as it's no longer needed
+      nix.package = pkgs.nix;
 
       # Necessary for using flakes on this system.
       nix = {
+        enable = true;  # Add this line to explicitly enable nix
         optimise = {
           automatic = true;
           interval = {
@@ -153,7 +159,7 @@
 
       # Used for backwards compatibility, please read the changelog before changing.
       # $ darwin-rebuild changelog
-      system.stateVersion = 5;
+      system.stateVersion = 4;
 
       # The platform the configuration will be used on.
       nixpkgs.hostPlatform = "aarch64-darwin";
@@ -199,7 +205,7 @@
             # Optional: Enable fully-declarative tap management
             #
             # With mutableTaps disabled, taps can no longer be added imperatively with `brew tap`.
-             # mutableTaps = false;
+            # mutableTaps = false;
           };
         }
       ];

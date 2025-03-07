@@ -160,7 +160,7 @@ in
     enableCompletion = true;
     
     # 使用 home-manager 的插件管理而不是 oh-my-zsh 的
-    enableAutosuggestions = true;
+    autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
     
     plugins = [

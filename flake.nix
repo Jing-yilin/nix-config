@@ -35,6 +35,7 @@
       environment.systemPackages = with pkgs; [
         home-manager.packages.${system}.default
         mkalias
+        gh
       ];
 
       homebrew = {
@@ -47,6 +48,7 @@
           "mas"
           "git-lfs"
           "node"
+          "yarn"
           "yazi"
           "cliclick"
           "imagemagick"
@@ -71,7 +73,6 @@
           # "only-switch"
           "zed"
           "anydesk"
-          "listen1"
         ];
         masApps = {
           # "Yoink" = 457622435;

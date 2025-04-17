@@ -3,11 +3,11 @@
 let
   Follow = pkgs.stdenv.mkDerivation {
     pname = "Follow";
-    version = "0.3.1-beta.0";
+    version = "0.4.2";
     
     src = pkgs.fetchurl {
-      url = "https://github.com/RSSNext/Follow/releases/download/v0.3.1-beta.0/Follow-0.3.1-beta.0-macos-arm64.dmg";
-      sha256 = "ed08f999dab97bca404e71b78cb7b46e10763997c8afad0dcb5e844f203b53e9";
+      url = "https://github.com/RSSNext/Folo/releases/download/v0.4.2/Folo-0.4.2-macos-arm64.dmg";
+      sha256 = "27be83538c56cd2de62d143fdf6add7913e6b90f1215938929958eea61447b17";
     };
     
     nativeBuildInputs = [ pkgs.undmg ];
@@ -94,6 +94,8 @@ in
       Follow
       rustup
       coreutils
+      gh
+      nodejs
     ];
   };
 
@@ -257,11 +259,6 @@ in
           fi
       fi
       unset __conda_setup
-
-      # NVM configuration
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
 
       # Rust environment
       [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"

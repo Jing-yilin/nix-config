@@ -35,7 +35,6 @@
       environment.systemPackages = with pkgs; [
         home-manager.packages.${system}.default
         mkalias
-        gh
       ];
 
       homebrew = {
@@ -47,12 +46,13 @@
         brews = [
           "mas"
           "git-lfs"
-          "node"
           "yarn"
           "yazi"
           "cliclick"
           "imagemagick"
           "yt-dlp"
+          "pixi"
+          "nmap"
         ];
         casks = [
           "alt-tab"
@@ -62,6 +62,7 @@
           "termius"
           "iina"
           "postman"
+          "quarto"
           # "chatgpt"
           # "whatsapp"
           # "element"
@@ -86,6 +87,7 @@
         pkgs.nerd-fonts.jetbrains-mono
         pkgs.nerd-fonts.hack
         pkgs.nerd-fonts.meslo-lg
+        pkgs.lmodern
       ];
 
       system.activationScripts.applications.text = let

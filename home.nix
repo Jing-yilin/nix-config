@@ -1,8 +1,8 @@
 { config, pkgs, lib, inputs, system, username, ... }:
 
 let
-  Follow = pkgs.stdenv.mkDerivation {
-    pname = "Follow";
+  Folo = pkgs.stdenv.mkDerivation {
+    pname = "Folo";
     version = "0.4.2";
     
     src = pkgs.fetchurl {
@@ -20,7 +20,7 @@ let
     '';
     
     meta = {
-      description = "Follow RSS Reader";
+      description = "Folo RSS Reader";
       homepage = "https://github.com/RSSNext/Follow";
       platforms = lib.platforms.darwin;
     };
@@ -35,6 +35,14 @@ in
     homeDirectory = lib.mkForce "/Users/${username}";
     stateVersion = "25.05";
     enableNixpkgsReleaseCheck = false;
+    
+    # 添加 OpenMP 和 LLVM 环境变量
+    sessionVariables = {
+      LDFLAGS = "-L/opt/homebrew/opt/libomp/lib -L${pkgs.llvm}/lib";
+      CPPFLAGS = "-I/opt/homebrew/opt/libomp/include -I${pkgs.llvm}/include";
+      LLVM_CONFIG = "${pkgs.llvm}/bin/llvm-config";
+      MAMBA_ROOT_PREFIX = "$HOME/.micromamba";  # micromamba 根目录
+    };
     
     activation = {
       setupNvim = lib.hm.dag.entryBefore ["checkLinkTargets"] ''
@@ -91,11 +99,13 @@ in
       tree
       ffmpeg
       zoxide
-      Follow
+      Folo
       rustup
       coreutils
       gh
       nodejs
+      uv
+      cmake
     ];
   };
 
@@ -249,16 +259,19 @@ in
       # Initialize zoxide
       eval "$(zoxide init zsh)"
 
-      # Conda initialization
-      __conda_setup="$(~/anaconda3/bin/conda 'shell.zsh' 'hook' 2> /dev/null)"
-      if [ $? -eq 0 ]; then
-          eval "$__conda_setup"
-      else
-          if [ -f "~/anaconda3/etc/profile.d/conda.sh" ]; then
-              . "~/anaconda3/etc/profile.d/conda.sh"
-          fi
+      # LLVM 配置
+      export PATH="${pkgs.llvm}/bin:$PATH"
+      export LDFLAGS="-L${pkgs.llvm}/lib $LDFLAGS"
+      export CPPFLAGS="-I${pkgs.llvm}/include $CPPFLAGS"
+
+      # OpenMP 配置（由libomp提供）
+      export LDFLAGS="-L/opt/homebrew/opt/libomp/lib $LDFLAGS"
+      export CPPFLAGS="-I/opt/homebrew/opt/libomp/include $CPPFLAGS"
+
+      # Micromamba initialization
+      if [ -f "${pkgs.micromamba}/bin/micromamba" ]; then
+        eval "$(${pkgs.micromamba}/bin/micromamba shell hook --shell zsh)"
       fi
-      unset __conda_setup
 
       # Rust environment
       [[ -f "$HOME/.cargo/env" ]] && source "$HOME/.cargo/env"
@@ -297,6 +310,14 @@ in
       # System
       zz = "source ~/.zshrc";
 
+      # C/C++ with OpenMP
+      cppmp = "clang++ -fopenmp -std=c++11 -stdlib=libc++";
+      cmp = "clang -fopenmp";
+      ncpp = "${pkgs.llvm}/bin/clang++";
+      nc = "${pkgs.llvm}/bin/clang";
+      ncppmp = "${pkgs.llvm}/bin/clang++ -fopenmp -std=c++11 -stdlib=libc++";
+      ncmp = "${pkgs.llvm}/bin/clang -fopenmp";
+
       # Wave
       wv = "wsh view";
       we = "wsh edit";
@@ -322,6 +343,10 @@ in
       mem = "htop -s PERCENT_MEM";
       disk = "duf";
       sys = "glances";
+
+      # Conda aliases (using micromamba)
+      conda = "micromamba";
+      mamba = "micromamba";
     };
   };
 

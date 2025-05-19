@@ -27,6 +27,9 @@
 
       nixpkgs.config.allowUnfree = true;
 
+      # 设置主用户
+      system.primaryUser = username;
+
       # Set the nixbld group ID to match the actual value
       ids.gids.nixbld = 350;
 
@@ -35,6 +38,8 @@
       environment.systemPackages = with pkgs; [
         home-manager.packages.${system}.default
         mkalias
+        llvm
+        micromamba
       ];
 
       homebrew = {
@@ -50,9 +55,10 @@
           "yazi"
           "cliclick"
           "imagemagick"
-          "yt-dlp"
           "pixi"
           "nmap"
+          "open-mpi"
+          "libomp"
         ];
         casks = [
           "alt-tab"
@@ -74,6 +80,7 @@
           # "only-switch"
           "zed"
           "anydesk"
+          "linear-linear"
         ];
         masApps = {
           # "Yoink" = 457622435;
